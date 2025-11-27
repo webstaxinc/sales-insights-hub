@@ -36,7 +36,22 @@ const REQUIRED_COLUMNS = [
   "Incoterms", "Terms of payment"
 ];
 
-const EXCLUSION_NAMES: string[] = [];
+const EXCLUSION_NAMES: string[] = [
+  "PCS Premier Energy Private Limited",
+  "PEGEPL-4002",
+  "PEIPL BAHADURGUDA",
+  "PEIPL-Module Line",
+  "PEPPL_PP LEASE",
+  "PEPPL-2363 ANNARAM PLANT",
+  "Premier Energies Global Environment",
+  "PREMIER ENERGIES INTERNATIONAL",
+  "Premier Energies Limited",
+  "PREMIER ENERGIES LIMITED (ASSAM)",
+  "Premier Energies Photovoltaic",
+  "PREMIER ENERGIES STORAGE SOLUTIONS",
+  "PREMIER SOLAR POWERTECH PRIVATE LIM",
+  "Premier Solar Powertech Pvt Ltd",
+];
 
 const Upload = () => {
   const [isDragging, setIsDragging] = useState(false);
