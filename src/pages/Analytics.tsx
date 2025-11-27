@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import CustomerHistogram from "@/components/CustomerHistogram";
 import DataTable from "@/components/DataTable";
+import { getSalesData } from "@/lib/indexedDB";
 
 interface CustomerData {
   customerName: string;
@@ -19,14 +20,14 @@ const Analytics = () => {
   const [rawData, setRawData] = useState<any[]>([]);
 
   useEffect(() => {
-    const storedData = localStorage.getItem("salesData");
-    if (!storedData) {
-      navigate("/");
-      return;
-    }
+    const loadData = async () => {
+      const data = await getSalesData();
+      if (!data || data.length === 0) {
+        navigate("/");
+        return;
+      }
 
-    const data = JSON.parse(storedData);
-    setRawData(data);
+      setRawData(data);
 
     const customerMap = new Map<string, { total: number; count: number }>();
     
@@ -45,15 +46,18 @@ const Analytics = () => {
       }
     });
 
-    const aggregatedData: CustomerData[] = Array.from(customerMap.entries())
-      .map(([customerName, { total, count }]) => ({
-        customerName,
-        totalComputedPrice: total,
-        recordCount: count,
-      }))
-      .sort((a, b) => b.totalComputedPrice - a.totalComputedPrice);
+      const aggregatedData: CustomerData[] = Array.from(customerMap.entries())
+        .map(([customerName, { total, count }]) => ({
+          customerName,
+          totalComputedPrice: total,
+          recordCount: count,
+        }))
+        .sort((a, b) => b.totalComputedPrice - a.totalComputedPrice);
 
-    setCustomerData(aggregatedData);
+      setCustomerData(aggregatedData);
+    };
+
+    loadData();
   }, [navigate]);
 
   const filteredData = selectedCustomer
