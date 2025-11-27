@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import * as XLSX from "xlsx";
+import { saveSalesData } from "@/lib/indexedDB";
 
 interface SalesData {
   [key: string]: any;
@@ -126,7 +127,7 @@ const Upload = () => {
 
       const processedData = processExcelData(rawData);
       
-      localStorage.setItem("salesData", JSON.stringify(processedData));
+      await saveSalesData(processedData);
 
       setUploadSuccess(true);
       toast({
